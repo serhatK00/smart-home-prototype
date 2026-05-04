@@ -214,5 +214,18 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# ==========================================
+# C# / Visual Studio Kuralları (SERHAT - EKLEME)
+# ==========================================
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+
+
+
 # Streamlit
 .streamlit/secrets.toml
