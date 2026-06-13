@@ -1,0 +1,67 @@
+@{
+    Layout = null; // Şimdilik ana şablonu kullanmasın, saf HTML olsun.
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Akıllı Ev Test Paneli</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; line-height: 1.6; }
+        .kontrol-grubu { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; }
+        .btn-ac { background-color: #d4edda; color: #155724; }
+        .btn-kapat { background-color: #f8d7da; color: #721c24; }
+        #log { margin-top: 20px; padding: 15px; background: #333; color: #00ff00; border-radius: 5px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>🏠 Akıllı Ev Otomasyonu - Test Paneli</h1>
+    
+    <div class="kontrol-grubu">
+        <h3>💡 Lamba Kontrolü</h3>
+        <button class="btn-ac" onclick="istekGonder('IsikKontrol', true)">AÇ</button>
+        <button class="btn-kapat" onclick="istekGonder('IsikKontrol', false)">KAPAT</button>
+    </div>
+
+    <div class="kontrol-grubu">
+        <h3>🌀 Havalandırma (Fan)</h3>
+        <button class="btn-ac" onclick="istekGonder('Havalandirma', true)">ÇALIŞTIR</button>
+        <button class="btn-kapat" onclick="istekGonder('Havalandirma', false)">DURDUR</button>
+    </div>
+
+    <div class="kontrol-grubu">
+        <h3>🛡️ Güvenlik Sistemi</h3>
+        <button class="btn-ac" onclick="istekGonder('GuvenliMod', true)">GÜVENLİĞİ AÇ</button>
+        <button class="btn-kapat" onclick="istekGonder('GuvenliMod', false)">GÜVENLİĞİ KAPAT</button>
+    </div>
+
+    <div class="kontrol-grubu">
+        <h3>🔒 Kapı Kilidi</h3>
+        <button class="btn-ac" onclick="istekGonder('KapiKilidi', true)">KİLİTLE</button>
+        <button class="btn-kapat" onclick="istekGonder('KapiKilidi', false)">AÇ</button>
+    </div>
+
+    <div id="log">İşlem bekleniyor...</div>
+
+    <script>
+        async function istekGonder(actionName, deger) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerText = "İstek gönderiliyor...";
+
+            try {
+                // Not: MVC'de controller adı /Cihaz/ metot adı şeklinde çağrılır
+                const response = await fetch(`/Cihaz/${actionName}?durum=${deger}`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                logDiv.innerText = "Backend'den Gelen: " + data.mesaj;
+            } catch (error) {
+                logDiv.innerText = "Hata: Backend'e bağlanılamadı!";
+            }
+        }
+    </script>
+</body>
+</html>

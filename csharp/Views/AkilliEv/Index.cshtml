@@ -1,0 +1,182 @@
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Ev Sistemi - Kontrol Paneli</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; transition: background 0.5s; }
+        .box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        input, button { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+        button { cursor: pointer; font-weight: bold; border: none; }
+        .btn-primary { background: #007bff; color: white; }
+        .kontrol-satir { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #eee; }
+        .kontrol-satir span { font-size: 16px; font-weight: 600; color: #444; }
+        .toggle-btn { width: 120px !important; padding: 12px 0 !important; margin: 0 !important; border-radius: 10px !important; font-size: 14px !important; color: white; transition: 0.3s; }
+        .btn-acik { background: #28a745; }
+        .btn-kapali { background: #dc3545; }
+        #log { margin-top: 20px; padding: 12px; background: #2d2d2d; color: #00ff00; border-radius: 8px; font-size: 14px; text-align: center; font-family: 'Courier New', monospace; min-height: 20px; }
+        .yangin-modu { background: #ff0000 !important; }
+        .yangin-modu .box { border: 4px solid #fff200; animation: sarsinti 0.2s infinite; }
+        @@keyframes sarsinti {
+            0% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            100% { transform: translate(1px, 1px); }
+        }
+        @@keyframes blink { 
+            0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } 
+        }
+        .blink-effect { animation: blink 0.6s infinite; }
+    </style>
+</head>
+<body>
+    <div class="box" id="mainBox">
+
+        <div id="loginArea">
+            <h2>🔐 Sistem Girişi</h2>
+            <input type="text" id="user" placeholder="Kullanıcı Adı">
+            <input type="password" id="pass" placeholder="Şifre" onkeyup="if(event.keyCode === 13) login()">
+            <button onclick="login()" class="btn-primary">SİSTEME GİRİŞ YAP</button>
+        </div>
+
+        <div id="controlArea" style="display:none">
+            <h2 id="welcomeMsg">🏠 Ev Kontrol Paneli</h2>
+
+            <div class="kontrol-satir">
+                <span>💡 Lamba Sistemi</span>
+                <button id="btnLight" class="toggle-btn btn-acik" onclick="toggle('IsikKontrol', 'btnLight')">AÇ</button>
+            </div>
+
+            <div class="kontrol-satir">
+                <span>🌀 Havalandırma (Fan)</span>
+                <button id="btnFan" class="toggle-btn btn-acik" onclick="toggle('Havalandirma', 'btnFan')">AÇ</button>
+            </div>
+
+            <div class="kontrol-satir">
+                <span>🛡️ Güvenlik Modu</span>
+                <button id="btnSec" class="toggle-btn btn-acik" onclick="toggle('GuvenliMod', 'btnSec')">AÇ</button>
+            </div>
+
+            <div class="kontrol-satir">
+                <span>🔒 Kapı Kilidi</span>
+                <button id="btnDoor" class="toggle-btn btn-acik" onclick="toggle('KapiKilidi', 'btnDoor')">AÇ</button>
+            </div>
+
+            <div class="kontrol-satir">
+                <span>🚪 Kapı Aç/Kapat</span>
+                <button id="btnDoorControl" class="toggle-btn btn-acik" onclick="toggle('KapiDurumuKontrol', 'btnDoorControl')">AÇ</button>
+            </div>
+
+            <div class="kontrol-satir">
+                <span>🔥 Yangın Sistemi</span>
+                <button id="btnFire" class="toggle-btn btn-acik" onclick="toggle('YanginSistemiKontrol', 'btnFire')">AÇ</button>
+            </div>
+
+            <div id="log">Sistem Bağlantısı Hazır...</div>
+        </div>
+    </div>
+
+    <script>
+        // Butonların mevcut durumunu tutan obje
+        const durumlar = {
+            btnLight: false,
+            btnFan:   false,
+            btnSec:   false,
+            btnDoor:  false,
+            btnDoorControl: false,
+            btnFire:  false
+        };
+
+        async function login() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            const res = await fetch(`/AkilliEv/GirisKontrol?user=${u}&pass=${p}`, { method: 'POST' });
+            const data = await res.json();
+            if(data.basarili) {
+                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('controlArea').style.display = 'block';
+                document.getElementById('welcomeMsg').innerText = `Hoş geldin, ${u}! 👋`;
+                baslatDurumGozcusu();
+            } else { 
+                alert("❌ Hatalı Kullanıcı Adı veya Şifre!"); 
+            }
+        }
+
+        async function toggle(actionName, btnId) {
+            const logDiv = document.getElementById('log');
+            const yeniDurum = !durumlar[btnId];
+            logDiv.innerText = "⏳ Komut gönderiliyor...";
+            try {
+                const res = await fetch(`/AkilliEv/${actionName}?durum=${yeniDurum}`, { method: 'POST' });
+                if (!res.ok) throw new Error('Sunucu hatası');
+                const data = await res.json();
+                // Komut başarılıysa butonun metin ve rengini hemen güncelle.
+                butonGuncelle(btnId, yeniDurum);
+                logDiv.innerText = "✅ " + data.mesaj;
+            } catch (e) { 
+                logDiv.innerText = "❌ Bağlantı koptu! (Python kapalı olabilir)"; 
+            }
+        }
+
+        function butonGuncelle(btnId, acikMi) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            durumlar[btnId] = acikMi;
+            if (acikMi) {
+                btn.className = 'toggle-btn btn-kapali';
+                btn.innerText = 'KAPAT';
+            } else {
+                btn.className = 'toggle-btn btn-acik';
+                btn.innerText = 'AÇ';
+            }
+        }
+
+        function gelenDurumUygula(btnId, value) {
+            if (typeof value === 'boolean') {
+                butonGuncelle(btnId, value);
+            }
+        }
+
+        function baslatDurumGozcusu() {
+            setInterval(async function() {
+                try {
+                    const res = await fetch('/AkilliEv/CihazDurumlariniGetir');
+                    const data = await res.json();
+
+                    gelenDurumUygula('btnLight', data.light);
+                    gelenDurumUygula('btnFan',   data.fan);
+                    gelenDurumUygula('btnSec',   data.securitymode);
+                    gelenDurumUygula('btnDoor',  data.door);
+                    gelenDurumUygula('btnFire',  data.firesystem);
+                    gelenDurumUygula('btnDoorControl', data.door_on ?? data.doorcontrol ?? data.door_open ?? data.doorOpen);
+
+                    // Alarm sadece gerçek yangın bildirimi varsa çalışmalı.
+                    const yanginRes = await fetch('/AkilliEv/YanginDurumuSorgula');
+                    const yanginData = await yanginRes.json();
+                    yanginTetikle(yanginData.yangin === true);
+                } catch (e) { 
+                    console.log("Durum alınamadı..."); 
+                }
+            }, 2000);
+        }
+
+        function yanginTetikle(aktif) {
+            const logDiv = document.getElementById('log');
+            if (aktif) {
+                document.body.classList.add('yangin-modu');
+                document.getElementById('mainBox').classList.add('blink-effect');
+                logDiv.style.background = "#fff200";
+                logDiv.style.color = "#ff0000";
+                logDiv.innerText = "⚠️ ACİL DURUM: YANGIN ALGILANDI!";
+            } else {
+                document.body.classList.remove('yangin-modu');
+                document.getElementById('mainBox').classList.remove('blink-effect');
+                logDiv.style.background = "#2d2d2d";
+                logDiv.style.color = "#00ff00";
+            }
+        }
+    </script>
+</body>
+</html>

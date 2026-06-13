@@ -1,0 +1,43 @@
+Yapılacaklar
+- [ ] Proje planlaması
+- [ ] Gereksinim analizi
+- [ ] Tasarım
+- [ ] Kodlama
+- [ ] Test
+
+Proje Planlaması:
+    
+    Bir kullanıcı panelimiz olucak
+        Işık Aç/kapat butonu --> açık olduğunda ona özel bir resim kapalı olduğunda kapalı ışık resmi
+        Klimaları aç/kapat için buton --> Bu da fanı çalıştırıcak
+        Kapıyı kilitle/aç için buton --> bu da servo motoru hareket ettiricek ve süngünün sola/sağa dönmesini sağlayacak
+        
+        Ayarlar kısmı olucak:
+            Güvenlik modu açık/kapalı butonu olucak --> Sensör ile kapının önünden biri geçerse alarm çalmaya başlayacak kullanıcı arayüzüne de bildirim gidecek ve kullanıcı arayüzünde açılan pencerede alarmı sustur diye bir buton olucak buna basılana kadar alarm çalışacak.
+            Yangın koruması aç/kapat butonu olucak -->  Sensör ile yangın tespit edilirse alarm çalıcak ve kullanıcı arayüzünde pencerede uyarı veircek alarmı durdur diyerek kapatabilirz
+
+
+Gereksinim analizi:
+    api öğrenmek gerekli
+    Pyqt5 için QTDESİNGER 
+    Pyqt5 için gerekli komutlar
+    thread yapısının hatırlanması
+
+Tasarım:
+    Değişken oluşturma
+        light_button
+        fan_button
+        doorlock_button
+
+    Settings
+        security_mode_button
+        fire_protection_button  
+
+    css style da butonun içindeki yazıyı ortalamak için
+    QPushButton {
+        text-align: center; //böye yazdık ama yinede ortalanmadı o zaman QPushButton {
+        qproperty-alignment: AlignCenter; //bu şekilde yazdık ama yine ortalanmadı o zaman QPushButton {
+
+    }
+    
+    

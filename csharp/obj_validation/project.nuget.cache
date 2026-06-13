@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "2T9tva6WfWs=",
+  "success": true,
+  "projectFilePath": "c:\\Users\\UfukU\\Desktop\\akillievpaneli\\csharp\\AkıllıEv.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\UfukU\\.nuget\\packages\\system.net.http.json\\10.0.5\\system.net.http.json.10.0.5.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1510",
+      "level": "Warning",
+      "message": "PackageReference System.Net.Http.Json ayıklanmayacak. Bu paketi bağımlılıklarınızdan kaldırmayı düşünün, çünkü muhtemelen gereksizdir.",
+      "projectPath": "c:\\Users\\UfukU\\Desktop\\akillievpaneli\\csharp\\AkıllıEv.csproj",
+      "warningLevel": 1,
+      "filePath": "c:\\Users\\UfukU\\Desktop\\akillievpaneli\\csharp\\AkıllıEv.csproj",
+      "libraryId": "System.Net.Http.Json",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}

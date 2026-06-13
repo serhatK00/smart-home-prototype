@@ -1,0 +1,5 @@
+RunHomeSystem isimli "bat" uzantılı dosyayı çalıştırınca hem ana sunucu(python) hem web sunucusu(c#) çalışır.
+
+Arduinio, bilgisayarın "com11" portuna takılı olmalı.
+
+Web sunucusuna erişmek için çalışan bat dosyasında gözüken ip adresini kullanınız

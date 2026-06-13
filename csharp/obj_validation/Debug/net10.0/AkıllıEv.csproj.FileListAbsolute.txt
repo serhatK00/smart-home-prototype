@@ -1,0 +1,8 @@
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\rpswa.dswa.cache.json
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.AssemblyInfoInputs.cache
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.AssemblyInfo.cs
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.csproj.CoreCompileInputs.cache
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.MvcApplicationPartsAssemblyInfo.cache
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.RazorAssemblyInfo.cache
+c:\Users\UfukU\Desktop\akillievpaneli\csharp\obj_validation\Debug\net10.0\AkıllıEv.RazorAssemblyInfo.cs
